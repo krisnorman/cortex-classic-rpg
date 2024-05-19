@@ -10,15 +10,46 @@ import { Resistance } from "./Resistance";
 import { Attributes } from "../";
 
 export class DerivedAttributes {
-    LifePoints: LifePoints = new LifePoints(this.attributes.Willpower, this.attributes.Vitality);
-    Initiative: Initiative = new Initiative(this.attributes.Agility, this.attributes.Alertness);
-    Endurance: Endurance = new Endurance(this.attributes.Vitality, this.attributes.Willpower);
-    Resistance: Resistance = new Resistance(this.attributes.Vitality);
-    BurstOfStrength: BurstOfStrength = new BurstOfStrength(this.attributes.Strength);
-    OutOfHarmsWay: OutOfHarmsWay = new OutOfHarmsWay(this.attributes.Agility, this.attributes.Alertness);
-    LongHaul: LongHaul = new LongHaul(this.attributes.Strength,this.attributes.Vitality);
-    Memorize: Memorize = new Memorize(this.attributes.Intelligence, this.attributes.Alertness);
-    Recall: Recall = new Recall(this.attributes.Intelligence, this.attributes.Willpower);
-    
-    constructor(private attributes: Attributes) {}
+  constructor(private attributes: Attributes) {
+    this.LifePoints = new LifePoints(
+      this.attributes.Willpower,
+      this.attributes.Vitality
+    );
+    this.Initiative = new Initiative(
+      this.attributes.Agility,
+      this.attributes.Alertness
+    );
+    this.Endurance = new Endurance(
+      this.attributes.Vitality,
+      this.attributes.Willpower
+    );
+    this.Resistance = new Resistance(this.attributes.Vitality);
+    this.BurstOfStrength = new BurstOfStrength(this.attributes.Strength);
+    this.OutOfHarmsWay = new OutOfHarmsWay(
+      this.attributes.Agility,
+      this.attributes.Alertness
+    );
+    this.LongHaul = new LongHaul(
+      this.attributes.Strength,
+      this.attributes.Vitality
+    );
+    this.Memorize = new Memorize(
+      this.attributes.Intelligence,
+      this.attributes.Alertness
+    );
+    this.Recall = new Recall(
+      this.attributes.Intelligence,
+      this.attributes.Willpower
+    );
+  }
+
+  LifePoints: LifePoints;
+  Initiative: Initiative;
+  Endurance: Endurance;
+  Resistance: Resistance;
+  BurstOfStrength: BurstOfStrength;
+  OutOfHarmsWay: OutOfHarmsWay;
+  LongHaul: LongHaul;
+  Memorize: Memorize;
+  Recall: Recall;
 }

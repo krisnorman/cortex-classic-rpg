@@ -1,7 +1,7 @@
-import { Dice, Die } from "../../../dice";
-import { Agility } from "../Agility";
-import { Alertness } from "../Alertness";
-import { Initiative } from "./Initiative";
+import { Dice, Die } from "../src/models/dice";
+import { Agility } from "../src/models/character/attributes/Agility";
+import { Alertness } from "../src/models/character/attributes/Alertness";
+import { Initiative } from "../src/models/character/attributes/derived/Initiative";
 
 const die: Die = Dice.d4;
 const agi: Agility = new Agility(die);

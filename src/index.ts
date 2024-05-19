@@ -9,7 +9,7 @@
     Willpower,
     Attributes
   } from './models/character/attributes';
-  
+   
   export {
     DerivedAttributes,
     DerivedAttributeBase,
@@ -57,4 +57,3 @@
   export { Height } from './models/character/Height';
   export { Dice, Die, Roller} from './models/dice';
   export { AppConfig } from './AppConfig'
-  

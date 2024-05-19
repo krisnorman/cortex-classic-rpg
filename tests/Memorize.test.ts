@@ -1,7 +1,7 @@
-import { Dice, Die } from "../../../dice";
-import { Alertness } from "../Alertness";
-import { Intelligence } from "../Intelligence";
-import { Memorize } from "./Memorize";
+import { Dice, Die } from "../src/models/dice";
+import { Alertness } from "../src/models/character/attributes/Alertness";
+import { Intelligence } from "../src/models/character/attributes/Intelligence";
+import { Memorize } from "../src/models/character/attributes/derived/Memorize";
 
 const die: Die = Dice.d4;
 const int: Intelligence = new Intelligence(die);

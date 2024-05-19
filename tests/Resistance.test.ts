@@ -1,6 +1,6 @@
-import { Dice, Die } from "../../../dice";
-import { Vitality } from "../Vitality";
-import { Resistance } from "./Resistance";
+import { Dice, Die } from "../src/models/dice";
+import { Vitality } from "../src/models/character/attributes/Vitality";
+import { Resistance } from "../src/models/character/attributes/derived/Resistance";
 
 const die: Die = Dice.d4;
 const vit: Vitality = new Vitality(die);

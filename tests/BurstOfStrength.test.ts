@@ -1,6 +1,6 @@
-import { Dice, Die } from "../../../dice";
-import { Strength } from "../Strength";
-import { BurstOfStrength } from "./BurstOfStrength";
+import { Dice, Die } from "../src/models/dice";
+import { Strength } from "../src/models/character/attributes/Strength";
+import { BurstOfStrength } from "../src/models/character/attributes/derived/BurstOfStrength";
 
 const die: Die = Dice.d4;
 const str: Strength = new Strength(die);

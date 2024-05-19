@@ -1,4 +1,4 @@
-import { Attributes } from "./Attributes";
+import { Attributes } from "../src/models/character/attributes/Attributes";
 const validValue: number = 2;
 const underMinValue = 1;
 const overMaxValue = 14;

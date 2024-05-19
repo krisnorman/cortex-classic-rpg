@@ -1,0 +1,10 @@
+package-lock.json
+dist/app.js
+dist/app.d.ts
+src
+tests
+jest.config.js
+.github
+coverage
+node_modules
+tsconfig.json

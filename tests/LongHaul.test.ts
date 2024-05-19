@@ -1,7 +1,7 @@
-import { Dice, Die } from "../../../dice";
-import { Strength } from "../Strength";
-import { Vitality } from "../Vitality";
-import { LongHaul } from "./LongHaul";
+import { Dice, Die } from "../src/models/dice";
+import { Strength } from "../src/models/character/attributes/Strength";
+import { Vitality } from "../src/models/character/attributes/Vitality";
+import { LongHaul } from "../src/models/character/attributes/derived/LongHaul";
 
 const die: Die = Dice.d4;
 const str: Strength = new Strength(die);

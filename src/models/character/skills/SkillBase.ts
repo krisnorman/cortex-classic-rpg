@@ -9,7 +9,7 @@ export class SkillBase implements ISkill {
     updateDie(newDie: Die): void {        
         this._dieType = newDie;
     }
-    value: number = this._dieType.sides;
+    get value(): number {return this._dieType.sides;};
     name: string = "";
     get Sides(): number { return this._dieType.sides; }
     get Die(): string { return this._dieType.name; };    

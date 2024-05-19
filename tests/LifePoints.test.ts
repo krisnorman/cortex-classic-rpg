@@ -1,7 +1,7 @@
-import { Dice, Die } from "../../../dice";
-import { Vitality } from "../Vitality";
-import { Willpower } from "../Willpower";
-import { LifePoints } from "./LifePoints";
+import { Dice, Die } from "../src/models/dice";
+import { Vitality } from "../src/models/character/attributes/Vitality";
+import { Willpower } from "../src/models/character/attributes/Willpower";
+import { LifePoints } from "../src/models/character/attributes/derived/LifePoints";
 
 const die: Die = Dice.d4;
 const wil: Willpower = new Willpower(die);

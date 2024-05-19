@@ -24,9 +24,9 @@ let character = new Character(
     new Height(6,2),
     attributes,
     skills,
-    specializations
+    specializations 
 );
 
 let training = character.Skills.AnimalHandling.Specializations.Training;
-   
-console.log(training.roll());
+
+console.log(training.Sides);
