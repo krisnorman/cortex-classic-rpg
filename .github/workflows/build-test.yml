@@ -1,0 +1,21 @@
+name: Node.js Build and test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          always-auth: true
+          node-version: '18.x'
+          registry-url: https://registry.npmjs.org
+          scope: '@krisnorman'
+      - run: npm install
+      - run: npm run build --if-present
+      - run: npm test
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

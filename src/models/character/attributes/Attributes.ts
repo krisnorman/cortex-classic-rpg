@@ -4,7 +4,7 @@ import { Intelligence } from "./Intelligence";
 import { Strength } from "./Strength";
 import { Vitality } from "./Vitality";
 import { Willpower } from "./Willpower";
-import { Die } from "../../dice";
+import { Die } from "@krisnorman/rpg-utils";
 import { AppConstants } from "../../../AppConstants";
 
 export class Attributes {

@@ -1,5 +1,5 @@
 import { AttributeBase } from "./AttributeBase";
-import { Die } from "../../dice";
+import { Die } from "@krisnorman/rpg-utils";
 
 export class Willpower extends AttributeBase {
     constructor(dieType: Die) {

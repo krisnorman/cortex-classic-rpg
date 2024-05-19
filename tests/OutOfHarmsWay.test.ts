@@ -1,4 +1,4 @@
-import { Dice, Die } from "../src/models/dice";
+import { Dice, Die } from "@krisnorman/rpg-utils";
 import { Agility } from "../src/models/character/attributes/Agility";
 import { Alertness } from "../src/models/character/attributes/Alertness";
 import { OutOfHarmsWay } from "../src/models/character/attributes/derived/OutOfHarmsWay";

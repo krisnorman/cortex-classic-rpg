@@ -1,4 +1,4 @@
-import { Roller, Die } from "../../../dice";
+import { Roller, Die } from "@krisnorman/rpg-utils";
 import { ISkill } from "../ISkill";
 import { SkillBase } from "../SkillBase";
 import { ISpecialization } from "./ISpecialization";

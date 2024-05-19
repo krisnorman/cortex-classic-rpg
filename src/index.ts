@@ -55,5 +55,5 @@
   export { Achievement } from './models/character/Achievement';
   export { Hair } from './models/character/Hair';
   export { Height } from './models/character/Height';
-  export { Dice, Die, Roller} from './models/dice';
+  export { Dice, Die, Roller} from '@krisnorman/rpg-utils';
   export { AppConfig } from './AppConfig'

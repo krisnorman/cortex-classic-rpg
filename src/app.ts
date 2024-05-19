@@ -6,7 +6,7 @@ import { Height } from "./models/character/Height";
 import { AnimalHandling, Skills } from "./models/character/skills";
 import { Training } from "./models/character/skills/specializations/AnimalHandlingSpecialized";
 import { Specializations } from "./models/character/skills/specializations/Specializations";
-import { Dice } from "./models/dice";
+import { Dice } from "@krisnorman/rpg-utils";
 
 let config = AppConfig.getInstance();
 config.Botch = 2;
@@ -29,4 +29,4 @@ let character = new Character(
 
 let training = character.Skills.AnimalHandling.Specializations.Training;
 
-console.log(training.Sides);
+console.log(training.roll());

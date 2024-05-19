@@ -1,4 +1,4 @@
-import { Die } from "../../../dice";
+import { Die } from "@krisnorman/rpg-utils";
 
 export interface ISpecialization {    
     roll(): number;

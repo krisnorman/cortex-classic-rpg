@@ -9,7 +9,7 @@ import { Covert } from "./Covert";
 import { Athletics } from "./Athletics";
 import { Artistry } from "./Artistry";
 import { AnimalHandling } from "./AnimalHandling";
-import { Die, Dice } from "../../dice";
+import { Die, Dice } from "@krisnorman/rpg-utils";
 import { MedicalExpertise } from "./MedicalExpertise";
 import { MeleeWeaponCombat } from "./MeleeWeaponCombat";
 import { Perception } from "./Perception";

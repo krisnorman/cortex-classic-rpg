@@ -1,4 +1,4 @@
-import { Die } from "../../dice";
+import { Die } from "@krisnorman/rpg-utils";
 import { SkillBase } from "./SkillBase";
 
 export class Artistry extends SkillBase {
