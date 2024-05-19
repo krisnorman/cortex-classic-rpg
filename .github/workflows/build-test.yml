@@ -9,13 +9,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Use Node.js
         uses: actions/setup-node@v4
-        with:
-          always-auth: true
-          node-version: '18.x'
-          registry-url: https://npm.pkg.github.com
-          scope: '@krisnorman'
+        with:          
+          node-version: '18.x'          
       - run: npm install
       - run: npm run build --if-present
       - run: npm test
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
