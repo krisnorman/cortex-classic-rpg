@@ -4,7 +4,7 @@ import { ISkill } from "./ISkill";
 export class SkillBase implements ISkill {
     constructor(protected _dieType: Die = Dice.d0) { }
     roll(): number {
-        return this._dieType.roll().Total;
+        return this._dieType.roll().GrandTotal;
     }
     updateDie(newDie: Die): void {        
         this._dieType = newDie;

@@ -8,7 +8,7 @@ export class SpecializationBase implements ISpecialization {
     roll(): number {
         let sides = this.Sides + this.parentSkill.Sides;
         let die = new Die("any", sides);
-        return die.roll().Total;
+        return die.roll().GrandTotal;
     }
     updateDie(newDie: Die): void {
         this._dieType = newDie;

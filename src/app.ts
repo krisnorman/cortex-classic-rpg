@@ -18,7 +18,7 @@ skills.AnimalHandling.updateDie(Dice.d4);
 
 let specializations = new Specializations(
     new Training(Dice.d4, skills.AnimalHandling));
-
+ 
 let character = new Character(
     new Hair("Blonde", "Short", "Straight"),
     new Height(6,2),
@@ -29,4 +29,4 @@ let character = new Character(
 
 let training = character.Skills.AnimalHandling.Specializations.Training;
 
-console.log(training.roll());
+console.log(character.Attributes.Alertness.roll());

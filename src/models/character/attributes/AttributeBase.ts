@@ -1,4 +1,4 @@
-import { Die, Roller } from "@krisnorman/rpg-utils";
+import { Die } from "@krisnorman/rpg-utils";
 
 export class AttributeBase {
   constructor(private dieType: Die) {
@@ -8,6 +8,6 @@ export class AttributeBase {
   value: number;
 
   public roll(): number {
-    return Roller.roll(this.dieType.sides).Total;
+    return this.dieType.roll().GrandTotal;
   }
 }
