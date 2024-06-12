@@ -1,104 +1,103 @@
-import { MechanicalEngineering } from "./MechanicalEngineering";
-import { Linguist } from "./Linguist";
-import { Knowledge } from "./Knowledge";
-import { Influence } from "./Influence";
-import { HeavyWeapons } from "./HeavyWeapons";
-import { Guns } from "./Guns";
-import { Discipline } from "./Discipline";
-import { Covert } from "./Covert";
-import { Athletics } from "./Athletics";
-import { Artistry } from "./Artistry";
-import { AnimalHandling } from "./AnimalHandling";
-import { Die, Dice } from "@krisnorman/rpg-utils";
-import { MedicalExpertise } from "./MedicalExpertise";
-import { MeleeWeaponCombat } from "./MeleeWeaponCombat";
-import { Perception } from "./Perception";
-import { Performance } from "./Performance";
-import { Pilot } from "./Pilot";
-import { PlanetaryVehicles } from "./PlanetaryVehicles";
-import { RangedWeapons } from "./RangedWeapons";
-import { ScientificExpertise } from "./ScientificExpertise";
-import { Survival } from "./Survival";
-import { TechnicalEngineering } from "./TechnicalEngineering";
-import { UnarmedCombat } from "./UnarmedCombat";
-import { Craft } from "./Craft";
-import { SkillBase } from "./SkillBase";
+import { MechanicalEngineering } from "./MechanicalEngineering.js";
+import { Linguist } from "./Linguist.js";
+import { Knowledge } from "./Knowledge.js";
+import { Influence } from "./Influence.js";
+import { HeavyWeapons } from "./HeavyWeapons.js";
+import { Guns } from "./Guns.js";
+import { Discipline } from "./Discipline.js";
+import { Covert } from "./Covert.js";
+import { Athletics } from "./Athletics.js";
+import { Artistry } from "./Artistry.js";
+import { AnimalHandling } from "./AnimalHandling.js";
+import { MedicalExpertise } from "./MedicalExpertise.js";
+import { MeleeWeaponCombat } from "./MeleeWeaponCombat.js";
+import { Perception } from "./Perception.js";
+import { Performance } from "./Performance.js";
+import { Pilot } from "./Pilot.js";
+import { PlanetaryVehicles } from "./PlanetaryVehicles.js";
+import { RangedWeapons } from "./RangedWeapons.js";
+import { ScientificExpertise } from "./ScientificExpertise.js";
+import { Survival } from "./Survival.js";
+import { TechnicalEngineering } from "./TechnicalEngineering.js";
+import { UnarmedCombat } from "./UnarmedCombat.js";
+import { Craft } from "./Craft.js";
+import { Skill, SkillDie } from "./ISkill.js";
 
 export interface ISkills {
   AnimalHandling: AnimalHandling;
-  Artistry: SkillBase;
-  Athletics: SkillBase;
-  Covert: SkillBase;
-  Craft: SkillBase;
-  Discipline: SkillBase;
-  Guns: SkillBase;
-  HeavyWeapons: SkillBase;
-  Influence: SkillBase;
-  Knowledge: SkillBase;
-  Linguist: SkillBase;
-  MechanicalEngineering: SkillBase;
-  MedicalExpertise: SkillBase;
-  MeleeWeaponCombat: SkillBase;
-  Perception: SkillBase;
-  Performance: SkillBase;
-  Pilot: SkillBase;
-  PlanetaryVehicles: SkillBase;
-  RangedWeapons: SkillBase;
-  ScientificExpertise: SkillBase;
-  Survival: SkillBase;
-  TechnicalEngineering: SkillBase;
-  UnarmedCombat: SkillBase;
+  Artistry: Skill;
+  Athletics: Skill;
+  Covert: Skill;
+  Craft: Skill;
+  Discipline: Skill;
+  Guns: Skill;
+  HeavyWeapons: Skill;
+  Influence: Skill;
+  Knowledge: Skill;
+  Linguist: Skill;
+  MechanicalEngineering: Skill;
+  MedicalExpertise: Skill;
+  MeleeWeaponCombat: Skill;
+  Perception: Skill;
+  Performance: Skill;
+  Pilot: Skill;
+  PlanetaryVehicles: Skill;
+  RangedWeapons: Skill;
+  ScientificExpertise: Skill;
+  Survival: Skill;
+  TechnicalEngineering: Skill;
+  UnarmedCombat: Skill;
 }
 
 export class Skills implements ISkills {
   AnimalHandling: AnimalHandling;
-  Artistry: SkillBase;
-  Athletics: SkillBase;
-  Covert: SkillBase;
-  Craft: SkillBase;
-  Discipline: SkillBase;
-  Guns: SkillBase;
-  HeavyWeapons: SkillBase;
-  Influence: SkillBase;
-  Knowledge: SkillBase;
-  Linguist: SkillBase;
-  MechanicalEngineering: SkillBase;
-  MedicalExpertise: SkillBase;
-  MeleeWeaponCombat: SkillBase;
-  Perception: SkillBase;
-  Performance: SkillBase;
-  Pilot: SkillBase;
-  PlanetaryVehicles: SkillBase;
-  RangedWeapons: SkillBase;
-  ScientificExpertise: SkillBase;
-  Survival: SkillBase;
-  TechnicalEngineering: SkillBase;
-  UnarmedCombat: SkillBase;
+  Artistry: Skill;
+  Athletics: Skill;
+  Covert: Skill;
+  Craft: Skill;
+  Discipline: Skill;
+  Guns: Skill;
+  HeavyWeapons: Skill;
+  Influence: Skill;
+  Knowledge: Skill;
+  Linguist: Skill;
+  MechanicalEngineering: Skill;
+  MedicalExpertise: Skill;
+  MeleeWeaponCombat: Skill;
+  Perception: Skill;
+  Performance: Skill;
+  Pilot: Skill;
+  PlanetaryVehicles: Skill;
+  RangedWeapons: Skill;
+  ScientificExpertise: Skill;
+  Survival: Skill;
+  TechnicalEngineering: Skill;
+  UnarmedCombat: Skill;
 
   constructor(
-    animalHandling: Die = Dice.d0,
-    artistry: Die = Dice.d0,
-    athletics: Die = Dice.d0,
-    covert: Die = Dice.d0,
-    craft: Die = Dice.d0,
-    discipline: Die = Dice.d0,
-    guns: Die = Dice.d0,
-    heavyWeapons: Die = Dice.d0,
-    influence: Die = Dice.d0,
-    knowledge: Die = Dice.d0,
-    linguist: Die = Dice.d0,
-    mechanicalEngineering: Die = Dice.d0,
-    medicalExpertise: Die = Dice.d0,
-    meleeWeaponCombat: Die = Dice.d0,
-    perception: Die = Dice.d0,
-    performance: Die = Dice.d0,
-    pilot: Die = Dice.d0,
-    planetaryVehicles: Die = Dice.d0,
-    rangedWeapons: Die = Dice.d0,
-    scientificExpertise: Die = Dice.d0,
-    survival: Die = Dice.d0,
-    technicalEngineering: Die = Dice.d0,
-    unarmedCombat: Die = Dice.d0
+    animalHandling: SkillDie,
+    artistry: SkillDie,
+    athletics: SkillDie,
+    covert: SkillDie,
+    craft: SkillDie,
+    discipline: SkillDie,
+    guns: SkillDie,
+    heavyWeapons: SkillDie,
+    influence: SkillDie,
+    knowledge: SkillDie,
+    linguist: SkillDie,
+    mechanicalEngineering: SkillDie,
+    medicalExpertise: SkillDie,
+    meleeWeaponCombat: SkillDie,
+    perception: SkillDie,
+    performance: SkillDie,
+    pilot: SkillDie,
+    planetaryVehicles: SkillDie,
+    rangedWeapons: SkillDie,
+    scientificExpertise: SkillDie,
+    survival: SkillDie,
+    technicalEngineering: SkillDie,
+    unarmedCombat: SkillDie
   ) {
     this.AnimalHandling = new AnimalHandling(animalHandling);
     this.Artistry = new Artistry(artistry);
@@ -111,7 +110,9 @@ export class Skills implements ISkills {
     this.Influence = new Influence(influence);
     this.Knowledge = new Knowledge(knowledge);
     this.Linguist = new Linguist(linguist);
-    this.MechanicalEngineering = new MechanicalEngineering(mechanicalEngineering);
+    this.MechanicalEngineering = new MechanicalEngineering(
+      mechanicalEngineering
+    );
     this.MedicalExpertise = new MedicalExpertise(medicalExpertise);
     this.MeleeWeaponCombat = new MeleeWeaponCombat(meleeWeaponCombat);
     this.Perception = new Perception(perception);

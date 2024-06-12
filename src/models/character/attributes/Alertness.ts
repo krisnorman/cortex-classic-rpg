@@ -1,8 +1,7 @@
-import { AttributeBase } from "./AttributeBase";
-import { Die } from "@krisnorman/rpg-utils";
+import { AttributeBase, AttributeDie } from "./AttributeBase.js";
 
 export class Alertness extends AttributeBase {
-    constructor(dieType: Die) {
+    constructor(dieType: AttributeDie) {
         super(dieType);
     }
 

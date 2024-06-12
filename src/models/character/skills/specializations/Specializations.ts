@@ -1,4 +1,4 @@
-import { Training } from "./AnimalHandlingSpecialized";
+import { Training } from "./AnimalHandlingSpecialized.js";
 
 export class Specializations {
   constructor(

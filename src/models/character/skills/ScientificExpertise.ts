@@ -1,9 +1,7 @@
-import { Die } from "@krisnorman/rpg-utils";
-import { SkillBase } from "./SkillBase";
+import { Skill, SkillDie } from "./ISkill.js";
 
-export class ScientificExpertise extends SkillBase {
-    constructor(private dieType: Die){
-        super(dieType);
-        this.name = "ScientificExpertise";
-    }
+export class ScientificExpertise extends Skill {
+  constructor(die: SkillDie) {
+    super("Scientific Expertise", die);
+  }
 }

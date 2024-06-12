@@ -1,32 +1,12 @@
-import { AppConfig } from "./AppConfig";
-import { Attributes } from "./models/character/attributes";
-import { Character } from "./models/character/Character";
-import { Hair } from "./models/character/Hair";
-import { Height } from "./models/character/Height";
-import { AnimalHandling, Skills } from "./models/character/skills";
-import { Training } from "./models/character/skills/specializations/AnimalHandlingSpecialized";
-import { Specializations } from "./models/character/skills/specializations/Specializations";
-import { Dice } from "@krisnorman/rpg-utils";
+import { DiceTs } from "@krisnorman/rpg-utils";
+import { AttributeDice, AttributeDie } from "./models/character/attributes/AttributeBase.js";
+import { Strength } from "./models/character/attributes/Strength.js";
+import { Roller } from "./dice/Roller.js";
 
-let config = AppConfig.getInstance();
-config.Botch = 2;
-let attributes = Attributes.Create(4,6,2,10,8,12);
-let skills = new Skills();
+const dice = new DiceTs();
+const roller = new Roller(dice);
+const attributeDice = new AttributeDice(roller);
+const str = new Strength(attributeDice.d10);
 
-skills.AnimalHandling.updateDie(Dice.d4);
-//skills.AnimalHandling.specializations[0]
-
-let specializations = new Specializations(
-    new Training(Dice.d4, skills.AnimalHandling));
+console.log(str.roll());
  
-let character = new Character(
-    new Hair("Blonde", "Short", "Straight"),
-    new Height(6,2),
-    attributes,
-    skills,
-    specializations 
-);
-
-let training = character.Skills.AnimalHandling.Specializations.Training;
-
-console.log(character.Attributes.Alertness.roll());

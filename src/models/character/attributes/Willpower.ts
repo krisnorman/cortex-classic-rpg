@@ -1,11 +1,14 @@
-import { AttributeBase } from "./AttributeBase";
-import { Die } from "@krisnorman/rpg-utils";
+import { AttributeBase, AttributeDie } from "./AttributeBase.js";
 
 export class Willpower extends AttributeBase {
-    constructor(dieType: Die) {
-        super(dieType);
-    }
+  constructor(dieType: AttributeDie) {
+    super(dieType);
+  }
 
-    public get Name(): string { return "Willpower"; }
-    public get Abbreviation(): string { return "Wil"; }
+  public get Name(): string {
+    return "Willpower";
+  }
+  public get Abbreviation(): string {
+    return "Wil";
+  }
 }

@@ -1,10 +1,10 @@
-import { Height } from "./Height";
-import { Hair } from "./Hair";
-import { Attributes } from "../character/attributes";
-import { Achievement } from "./Achievement";
-import { DerivedAttributes } from "../character/attributes/derived/DerivedAttributes";
-import { Specializations } from "./skills/specializations/Specializations";
-import { ISkills } from "./skills";
+import { Height } from "./Height.js";
+import { Hair } from "./Hair.js";
+import { Attributes } from "./attributes/index.js";
+import { Achievement } from "./Achievement.js";
+import { IDerivedTraits, DerivedTraits } from "./derivedtraits/DerivedTraits.js";
+import { Specializations } from "./skills/specializations/Specializations.js";
+import { ISkills } from "./skills/index.js";
 
 export interface ICharacter {
   Id: number;
@@ -26,7 +26,7 @@ export interface ICharacter {
   TotalStunPoints: number;
   CurrentStunPoints: number;
   Attributes: Attributes;
-  DerivedAttributes: DerivedAttributes;
+  DerivedTraits: IDerivedTraits;
   Achievement: Achievement;
   Skills: ISkills;
   Specializations: Specializations;
@@ -49,7 +49,7 @@ export class Character implements ICharacter {
   CurrentWoundPoints: number = 0;
   TotalStunPoints: number = 0;
   CurrentStunPoints: number = 0;
-  DerivedAttributes: DerivedAttributes;
+  DerivedTraits: IDerivedTraits;
   Achievement: Achievement;  
 
   constructor(
@@ -59,7 +59,7 @@ export class Character implements ICharacter {
     public Skills: ISkills,
     public Specializations: Specializations
   ) {
-    this.DerivedAttributes = new DerivedAttributes(Attributes);
+    this.DerivedTraits = new DerivedTraits(Attributes);
     this.Achievement = new Achievement();
   }
 }
