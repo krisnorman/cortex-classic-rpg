@@ -3,6 +3,22 @@ import { IFooModel } from "./FantasyTreasureGenerator.js";
 import { ITableRow, MyTable } from "./MyTable.js";
 import { IRowResult2 } from "../../../data/IRowResult2.js";
 
+class Helpers {
+  constructor(private readonly dice: IDice) { }
+
+  getRandomRows(count: number = 1, table: MyTable<ITableRow>): ITableRow[] {
+    const result: ITableRow[] = [];
+
+    for (let index = 0; index < count; index++) {
+      const roll = this.dice.roll(table.DieExpression);
+      const row = table.find(roll.total);
+      result.push(row.Row);
+    }
+
+    return result;
+  }
+}
+
 export class MonetaryTreasureRepository {
   private readonly monetaryTreasureTable = new MyTable(
     MonetaryTreasureData,
@@ -235,16 +251,39 @@ export class MonetaryTreasureRepository {
 
     for (let index = 0; index < count; index++) {
       const roll = this.dice.roll(this.monetaryTreasureTable.DieExpression);
-      //const row = this.monetaryTreasureTable.find(16);
-      const row = this.getMonetaryTreasureBase(20);
+      const row = this.monetaryTreasureTable.find(11);
+      //const row = this.getMonetaryTreasureBase(1);
+      
+      // You get (20,000+(1d4)(10,000)) copper pieces and (20,000+(1d4+1)(10,000) silver pieces!
+      // Roll: 1-2
+      if (row.Index === 0) {
+        const coppers = this.getCopperPieces();
+        model.push(new CoinModel(coppers.Title));
+      }
 
-      // Coins, 1-2, 3-5, 6-10, 11-12
-      if (row.Index < 4) {
-        model.push(new CoinModel(row.Row.Value));
+      // You get (5,0000+(5d6)(1,000) electrum pieces!
+      // Roll: 3-5
+      if (row.Index === 1) {
+        const electrums = this.getElectrumPieces();
+        model.push(new CoinModel(electrums.Title));
+      }
+
+      // You get (3,000+(3d6)(1,000) gold pieces!
+      // Roll: 6-10
+      if (row.Index === 2) {
+        const golds = this.getGoldPieces();
+        model.push(new CoinModel(golds.Title));
+      }
+
+      // You get (500+(5d4)(100) platinum pieces!
+      // Roll: 11-12
+      if (row.Index === 3) {
+        const platinums = this.getPlatinumPieces();
+        model.push(new CoinModel(platinums.Title));
       }
 
       // Gems, 13-15
-      if (row.Index === 4) {
+      if (row.Index === 4) { 
         const gems = this.getGems();
         model.push(gems);
       }
@@ -285,6 +324,63 @@ export class MonetaryTreasureRepository {
 
     return clone;
   }
+
+  private getCopperPieces(): IFooModel {
+    const copperPieces = this.getRoll("20000+1d4*10000").toLocaleString("en-US");
+    const silverPieces = this.getRoll("20000+{1d4+1}*10000").toLocaleString("en-US");
+
+    const title =
+      `You get ${copperPieces} copper pieces and ` +
+      `${silverPieces} silver pieces!`;
+
+    const result: IFooModel = {
+      Title: title,
+      Items: [],
+      HasItems: false
+    };
+
+    return result;
+  }
+
+  private getElectrumPieces(): IFooModel {
+    const electrumPieces = this.getRoll("50000+5d6*1000").toLocaleString("en-US");
+    const title = `You get ${electrumPieces} electrum pieces!`;
+
+    const result: IFooModel = {
+      Title: title,
+      Items: [],
+      HasItems: false
+    };
+
+    return result;
+  }
+  
+  private getGoldPieces(): IFooModel {
+    const goldPieces = this.getRoll("3000+3d6*1000").toLocaleString("en-US");
+    const title = `You get ${goldPieces} gold pieces!`;
+
+    const result: IFooModel = {
+      Title: title,
+      Items: [],
+      HasItems: false
+    };
+
+    return result;
+  }
+
+  private getPlatinumPieces(): IFooModel {
+    const platinumPieces = this.getRoll("500+5d4*100").toLocaleString("en-US");
+    const title = `You get ${platinumPieces} platinum pieces!`;
+
+    const result: IFooModel = {
+      Title: title,
+      Items: [],
+      HasItems: false
+    };
+
+    return result;
+  }
+
   private getMonetaryTreasureBase(roll: number): IRowResult2<ITableRow> {
     let row = this.monetaryTreasureTable.find(roll);
 

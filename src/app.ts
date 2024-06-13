@@ -1,12 +1,9 @@
 import { DiceTs } from "@krisnorman/rpg-utils";
-import { AttributeDice, AttributeDie } from "./models/character/attributes/AttributeBase.js";
-import { Strength } from "./models/character/attributes/Strength.js";
-import { Roller } from "./dice/Roller.js";
+import { FantasyTreasureGenerator } from "./generators/fantasy/treasure/FantasyTreasureGenerator.js";
+import { MonetaryTreasureRepository } from "./generators/fantasy/treasure/index.js";
 
 const dice = new DiceTs();
-const roller = new Roller(dice);
-const attributeDice = new AttributeDice(roller);
-const str = new Strength(attributeDice.d10);
-
-console.log(str.roll());
+const generator = new MonetaryTreasureRepository(dice);
+const result = generator.getRandom();
+console.log(result);
  
