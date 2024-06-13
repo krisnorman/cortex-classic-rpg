@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export * from "./models/character/Character.js";
 export * from "./models/character/attributes/index.js";
 export * from "./models/character/derivedtraits/index.js";

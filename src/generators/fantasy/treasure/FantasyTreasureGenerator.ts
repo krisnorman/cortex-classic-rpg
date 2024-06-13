@@ -30,7 +30,11 @@ export interface IValueAndItems {
   Items: string[];
 }
 
-export class FantasyTreasureGenerator {
+export interface IFantasyTreasureGenerator {
+  generate(): IFantasyTreasure;
+}
+
+export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
   private readonly treasureTable = new MyTable(
     TreasureData,
     "Fantasy Treasure",
@@ -52,8 +56,7 @@ export class FantasyTreasureGenerator {
   private rodsStavesWandsRepository: RodsStavesWandsRepository;
   private miscMagicRepository: MiscMagicRepository;
 
-  constructor(private dice: IDice) {
-    //this.dice = new DiceTs(dice);
+  constructor(private readonly dice: IDice) {    
     this.armorRepository = new ArmorRepository(dice);
     this.weaponsRepository = new WeaponsRepository(dice);
     this.regularTreasureRepository = new RegularTreasureRepository(
@@ -103,39 +106,39 @@ export class FantasyTreasureGenerator {
     const fantasyTreasure: IFantasyTreasure = { Monetary: [] };
 
     const roll = this.dice.roll(this.treasureTable.DieExpression);
-    const row = this.treasureTable.find(roll.total);
+    const row = this.treasureTable.find(70);
 
-    // Map
+    // Map, 1-10
     if (row.Index === 0) {
       this.getMap().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
-    // Regular Treasure
+    // Regular Treasure, 11-69
     if (row.Index === 1) {
       this.getRegularTreasure().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
-    // Monetary Treasure
+    // Monetary Treasure, 70-79
     if (row.Index === 2) {
       this.getMonetaryTreasure().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
-    // Magic Items
+    // Magic Items, 80-89
     if (row.Index === 3) {
       this.getMagicTreasure().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
-    // Combined Hoard
+    // Combined Hoard, 90-99
     if (row.Index === 4) {
       this.getCombinedHoard().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
-    // No Treasure Found
+    // No Treasure Found, 100
     if (row.Index === 5) {
       fantasyTreasure.Monetary.push({ Value: "No Treasure Found", Items: [] });
     }
