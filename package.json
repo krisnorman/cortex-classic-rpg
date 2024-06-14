@@ -1,6 +1,6 @@
 {
   "name": "cortex-classic-rpg",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An implementation of the Cortex Classic RPG game system.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

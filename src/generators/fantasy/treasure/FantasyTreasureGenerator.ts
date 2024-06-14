@@ -14,6 +14,11 @@ import { RegularTreasureRepository } from "./RegularTreasure.js";
 import { ArmorRepository } from "./Armor.js";
 import { WeaponsRepository } from "./Weapons.js";
 import { DieType, IDice } from "@krisnorman/rpg-utils";
+import { MagicArmorRepository } from "./MagicArmor.js";
+import { MagicSwordRepository } from "./MagicSwords.js";
+import { MagicWeaponsRepository } from "./MagicWeapons.js";
+import { IounStoneRepository } from "./IounStones.js";
+import { InsturmentOfTheBardsRepository } from "./InsturmentOfTheBards.js";
 
 export interface IFooModel {
   Title: string;
@@ -55,10 +60,21 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
   private magicRingsRepository: MagicRingsRepository;
   private rodsStavesWandsRepository: RodsStavesWandsRepository;
   private miscMagicRepository: MiscMagicRepository;
+  private magicArmorRepository: MagicArmorRepository;
+  private magicSwordRepository: MagicSwordRepository;
+  private magicWeaponsRepository: MagicWeaponsRepository;
+  private iounStoneRepository: IounStoneRepository;
+  private insturmentOfTheBardsRepository: InsturmentOfTheBardsRepository;
 
   constructor(private readonly dice: IDice) {    
     this.armorRepository = new ArmorRepository(dice);
-    this.weaponsRepository = new WeaponsRepository(dice);
+    this.magicArmorRepository = new MagicArmorRepository(dice);
+    this.magicSwordRepository = new MagicSwordRepository(dice);
+    this.magicWeaponsRepository = new MagicWeaponsRepository(dice);
+    this.iounStoneRepository = new IounStoneRepository(dice);
+    this.insturmentOfTheBardsRepository = new InsturmentOfTheBardsRepository(dice);
+
+    this.weaponsRepository = new WeaponsRepository(dice);    
     this.regularTreasureRepository = new RegularTreasureRepository(
       dice,
       this.armorRepository,
@@ -74,7 +90,9 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
     this.rodsStavesWandsRepository = new RodsStavesWandsRepository(dice);
     this.miscMagicRepository = new MiscMagicRepository(
       dice,
-      this.spellsRepository
+      this.spellsRepository,
+      this.iounStoneRepository,
+      this.insturmentOfTheBardsRepository
     );
     this.magicItemsRepository = new MagicItemsRepository(
       dice,
@@ -82,7 +100,10 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
       this.scrollsRepository,
       this.magicRingsRepository,
       this.rodsStavesWandsRepository,
-      this.miscMagicRepository
+      this.miscMagicRepository,
+      this.magicArmorRepository,
+      this.magicSwordRepository,
+      this.magicWeaponsRepository
     );
     this.magicTreasureRepository = new MagicTreasureRepository(
       dice,
@@ -91,7 +112,11 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
       this.magicItemsRepository,
       this.magicRingsRepository,
       this.rodsStavesWandsRepository,
-      this.miscMagicRepository
+      this.miscMagicRepository,
+      this.magicArmorRepository,
+      this.magicSwordRepository,
+      this.magicWeaponsRepository,
+      this.iounStoneRepository
     );
     this.monetaryTreasureRepository = new MonetaryTreasureRepository(this.dice);
     this.combinedHoardRepository = new CombinedHoardRepository(
@@ -106,7 +131,7 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
     const fantasyTreasure: IFantasyTreasure = { Monetary: [] };
 
     const roll = this.dice.roll(this.treasureTable.DieExpression);
-    const row = this.treasureTable.find(70);
+    const row = this.treasureTable.find(roll.total);
 
     // Map, 1-10
     if (row.Index === 0) {
@@ -114,30 +139,35 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
+
     // Regular Treasure, 11-69
     if (row.Index === 1) {
       this.getRegularTreasure().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
+
     // Monetary Treasure, 70-79
     if (row.Index === 2) {
       this.getMonetaryTreasure().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
+
     // Magic Items, 80-89
     if (row.Index === 3) {
       this.getMagicTreasure().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
+
     // Combined Hoard, 90-99
     if (row.Index === 4) {
       this.getCombinedHoard().forEach((item) =>
         fantasyTreasure.Monetary.push({ Value: item.Title, Items: item.Items })
       );
     }
+
     // No Treasure Found, 100
     if (row.Index === 5) {
       fantasyTreasure.Monetary.push({ Value: "No Treasure Found", Items: [] });
@@ -154,7 +184,11 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
       this.magicItemsRepository,
       this.magicRingsRepository,
       this.rodsStavesWandsRepository,
-      this.miscMagicRepository
+      this.miscMagicRepository,
+      this.magicArmorRepository,
+      this.magicSwordRepository,
+      this.magicWeaponsRepository,
+      this.iounStoneRepository
     );
     let model = repo.getRandom();
     return model;
@@ -180,8 +214,6 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
     return result;
   }
 }
-
-
 
 export const TreasureData: ITableRow[] = [
   { Roll: [1, 10], Value: "Map" },

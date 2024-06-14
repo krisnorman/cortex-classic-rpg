@@ -34,21 +34,6 @@ export class ArmorRepository {
   }
 }
 
-// export class ArmorHelper {
-//   constructor(private table: MyTable<ITableRow>, private dice: DiceWrapper) {}
-
-//   generate(): IFooModel[] {
-//     const roll = this.dice.roll(this.table.DieExpression);
-//     const row = this.table.find(roll.total);
-//     const model: IFooModel = {
-//       Title: row.Row.Value,
-//       Items: [],
-//       HasItems: false,
-//     };
-//     return [model];
-//   }
-// }
-
 export const ArmorData: ITableRow[] = [
   { Roll: 1, Value: "Banded Armor, 2W, Torso, Arms, Legs" },
   { Roll: 2, Value: "Chain Mail Armor, 4W, Torso, Arms" },
@@ -64,4 +49,3 @@ export const ArmorData: ITableRow[] = [
   { Roll: 12, Value: "Splint Mail, 2W, Torso, Arms" },
   { Roll: 13, Value: "Studded Leather Armor, 3W, Torso" },
 ];
-// export const ArmorTable = new MyTable(ArmorData, "Armor", "d13");

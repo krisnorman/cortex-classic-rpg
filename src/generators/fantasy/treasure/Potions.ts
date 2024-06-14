@@ -3,13 +3,15 @@ import { IFooModel } from "./FantasyTreasureGenerator.js";
 import { DieType, IDice } from "@krisnorman/rpg-utils";
 
 export class Potion implements IFooModel {
-  constructor(private row: ITableRow) {
-    this.Title = row.Value;
+  constructor(title: string) {
+    this.Title = title;
+    this.Items = [];
+    this.HasItems = false;
   }
 
-  readonly Title: string = "";
-  readonly Items: string[] = [];
-  readonly HasItems: boolean = false;
+  readonly Title: string;
+  readonly Items: string[];
+  readonly HasItems: boolean;
 }
 
 export class PotionsRepository {
@@ -21,18 +23,93 @@ export class PotionsRepository {
 
   constructor(private dice: IDice) {}
 
-  getRandom(count: number = 1): Potion[] {
+  getRandom(count: number = 1, preRoll?: number): Potion[] {
     if (count < 1) count = 1;
     let potions: Potion[] = [];
 
     for (let index = 0; index < count; index++) {
-      const roll = this.dice.roll(this.potionsTable.DieExpression);
-      const row = this.potionsTable.find(roll.total);
-      const potion = new Potion(row.Row);
+      const roll =
+        preRoll === undefined
+          ? this.dice.roll(this.potionsTable.DieExpression).total
+          : preRoll;
+      const row = this.potionsTable.find(roll);
+
+      let title = row.Row.Value.replace(
+        "(1d6) doses",
+        `${this.dice.roll("1d6").total.toString()} doses`
+      ).replace(
+        "(1d6) hours",
+        `${this.dice.roll("1d6").total.toString()} hours`
+      );
+
+      switch (true) {
+        // Reroll on potion table, add ** tag at end of description, print result.
+        case row.Index === 4:
+          title = this.getReroll([13, 15]);
+          break;
+        case row.Index === 19:
+          title = title.replace(
+            "(1d6) minutes",
+            `${this.dice.roll("1d6").total.toString()} minutes`
+          );
+          break;
+        case row.Index === 21:
+          title = title.replace(
+            "(1d6 human equivolent)",
+            `${this.dice.roll("1d6").total.toString()}`
+          );
+          break;
+        case row.Index === 22:
+          title = title.replace(
+            "(1d6*10)",
+            `${this.dice.roll("1d6*10").total.toString()}`
+          );
+          break;
+        // Reroll on potion table, add ** tag at end of description, print result.
+        case row.Index === 28:
+          title = this.getReroll([82, 84]);
+          break;
+        case row.Index === 29:
+          title = title.replace(
+            "(1d6) minutes",
+            `${this.dice.roll("1d6").total.toString()} minutes`
+          );
+          break;
+        case row.Index === 30:
+          title = title.replace(
+            "(1d6) minutes",
+            `${this.dice.roll("1d6").total.toString()} minutes`
+          );
+          break;
+      }
+
+      const potion = new Potion(title);
       potions.push(potion);
     }
 
     return potions;
+  }
+
+  private getReroll(exclude: [number, number]): string {
+    // Reroll on potion table, add ** tag at end of description, print result.
+    let rollNumber: number = 0;
+    let shouldContinue: boolean = true;
+
+    while (shouldContinue) {
+      const roll = this.dice.roll(this.potionsTable.DieExpression);
+
+      if (roll.total >= exclude[0] && roll.total <= exclude[1]) {
+        shouldContinue = true;
+      } else {
+        rollNumber = roll.total;
+        shouldContinue = false;
+        break;
+      }
+    }
+
+    const rowResult = this.getRandom(1, rollNumber);
+    const title = `${rowResult[0].Title}(**)`;
+    return title;
   }
 }
 

@@ -4,13 +4,15 @@ import { DieType, IDice } from "@krisnorman/rpg-utils";
 import { IRowResult2 } from "../../../data/index.js";
 
 export class MagicRing implements IFooModel {
-  constructor(private row: ITableRow) {
-    this.Title = row.Value;
+  constructor(title: string) {
+    this.Title = title;
+    this.Items = [];
+    this.HasItems = false;
   }
 
   Title: string;
-  Items: string[] = [];
-  HasItems: boolean = false;
+  Items: string[];
+  HasItems: boolean;
 }
 
 export class MagicRingsRepository {
@@ -26,25 +28,34 @@ export class MagicRingsRepository {
 
     for (let index = 0; index < count; index++) {
       let row = this.getRandomRow();
+      let title = row.Row.Value;
 
       // Random ring (tagged with **)
       if (row.Index === 1 || row.Index === 21) {
         let shouldContinue = true;
         while (shouldContinue) {
           row = this.getRandomRow();
-          row.Row.Value = row.Row.Value.replace("!", "!**");
+          title = row.Row.Value.replace("!", "!**");
           if (row.Index != 1 && row.Index != 21) shouldContinue = false;
         }
-
-        // if (row.Index === 1) {
-        //   row.Row.Value = row.Row.Value.replace(
-        //     "1d100",
-        //     this.dice.roll("1d100").total.toString()
-        //   );
-        // }
       }
-      
-      const ring = new MagicRing(row.Row);
+
+      // Spell Storing
+      if (row.Index === 14) {
+        const numSpells = this.dice.roll("1d10").total;
+        const capacity = this.dice.roll("1d100").total - numSpells;
+        title = row.Row.Value.replace("1d10", numSpells.toString()).replace(
+          "1d100 minus previous roll",
+          capacity.toString()
+        );
+      }
+
+      title = title.replace(
+        "1d100 charges",
+        `${this.dice.roll(DieType.percentile).total.toString()} charges`
+      );
+
+      const ring = new MagicRing(title);
       rings.push(ring);
     }
 

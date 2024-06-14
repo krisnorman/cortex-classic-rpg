@@ -1,25 +1,31 @@
-import { ITableRow, MyTable } from './MyTable.js';
-import { IFooModel } from './FantasyTreasureGenerator.js';
-import { PotionsRepository } from './Potions.js';
-import { ScrollsRepository } from './Scrolls.js';
-import { MagicRingsRepository } from './MagicRings.js';
-import { RodsStavesWandsRepository } from './RodsStavesWands.js';
-import { MiscMagicRepository } from './MiscMagic.js';
-import { DieType, IDice } from '@krisnorman/rpg-utils';
+import { ITableRow, MyTable } from "./MyTable.js";
+import { IFooModel } from "./FantasyTreasureGenerator.js";
+import { PotionsRepository } from "./Potions.js";
+import { ScrollsRepository } from "./Scrolls.js";
+import { MagicRingsRepository } from "./MagicRings.js";
+import { RodsStavesWandsRepository } from "./RodsStavesWands.js";
+import { MiscMagicRepository } from "./MiscMagic.js";
+import { DieType, IDice } from "@krisnorman/rpg-utils";
+import { MagicArmorRepository } from "./MagicArmor.js";
+import { MagicSwordRepository } from "./MagicSwords.js";
+import { MagicWeaponsRepository } from "./MagicWeapons.js";
 
 export class MagicItemsRepository {
   private readonly magicItemsTable = new MyTable(
     MagicItemsData,
-    'Magic Items',
+    "Magic Items",
     DieType.percentile
   );
   constructor(
-    private dice: IDice,
-    private potionsRepository: PotionsRepository,
-    private scrollsRepository: ScrollsRepository,
-    private magicRingsRepository: MagicRingsRepository,
-    private rodsStavesWandsRepository: RodsStavesWandsRepository,
-    private miscMagicRepository: MiscMagicRepository
+    private readonly dice: IDice,
+    private readonly potionsRepository: PotionsRepository,
+    private readonly scrollsRepository: ScrollsRepository,
+    private readonly magicRingsRepository: MagicRingsRepository,
+    private readonly rodsStavesWandsRepository: RodsStavesWandsRepository,
+    private readonly miscMagicRepository: MiscMagicRepository,
+    private readonly magicArmorRepository: MagicArmorRepository,
+    private readonly magicSwordRepository: MagicSwordRepository,
+    private readonly magicWeaponsRepository: MagicWeaponsRepository
   ) {}
 
   getRandom(count: number = 1): IFooModel[] {
@@ -44,47 +50,49 @@ export class MagicItemsRepository {
         magicItems.push(...rings);
       }
       // Rods Table, 41-45
-      if (row.Index === 3) {        
+      if (row.Index === 3) {
         const item = this.rodsStavesWandsRepository.getRandom();
         magicItems.push(...item);
       }
       // Misc. Magic Table 1, 46-48
-      if (row.Index === 4) {        
+      if (row.Index === 4) {
         const miscMagic = this.miscMagicRepository.getMisc1();
         magicItems.push(...miscMagic);
       }
       // Misc. Magic Table 2, 49-51
-      if (row.Index === 5) {        
+      if (row.Index === 5) {
         const miscMagic2 = this.miscMagicRepository.getMisc2();
         magicItems.push(...miscMagic2);
       }
       // Misc. Magic Table 3, 52-54
-      if (row.Index === 6) {        
+      if (row.Index === 6) {
         const miscMagic3 = this.miscMagicRepository.getMisc3();
         magicItems.push(...miscMagic3);
       }
       // Misc. Magic Table 4, 55-57
-      if (row.Index === 7) {        
+      if (row.Index === 7) {
         const miscMagic4 = this.miscMagicRepository.getMisc4();
         magicItems.push(...miscMagic4);
       }
       // Misc. Magic Table 5, 58-60
-      if (row.Index === 8) {
-        magicItems.push({Title: "Misc. Magic Table 5", Items: [], HasItems: false});
+      if (row.Index === 8) {        
         const miscMagic5 = this.miscMagicRepository.getMisc5();
         magicItems.push(...miscMagic5);
       }
       // Magic Armor Table, 61-75
-      if (row.Index === 9) {
-        magicItems.push({Title: "Magic Armor", Items: [], HasItems: false});
+      if (row.Index === 9) {        
+        const magicArmor = this.magicArmorRepository.getRandom();
+        magicItems.push(...magicArmor);
       }
       // Magic Swords Table, 76-86
-      if (row.Index === 10) {
-        magicItems.push({Title: "Magic Sword", Items: [], HasItems: false});
+      if (row.Index === 10) {        
+        const magicSword = this.magicSwordRepository.getRandom();
+        magicItems.push(...magicSword);
       }
       // Misc. Weapons Table, 87-100
-      if (row.Index === 11) {
-        magicItems.push({Title: "Misc. Weapons Table", Items: [], HasItems: false});
+      if (row.Index === 11) {        
+        const miscWeapon = this.magicWeaponsRepository.getRandom();
+        magicItems.push(...miscWeapon);
       }
     }
 
@@ -93,16 +101,16 @@ export class MagicItemsRepository {
 }
 
 export const MagicItemsData: ITableRow[] = [
-  { Roll: [1, 20], Value: 'Potions Table' },
-  { Roll: [21, 35], Value: 'Scrolls Table' },
-  { Roll: [36, 40], Value: 'Magic Rings Table' },
-  { Roll: [41, 45], Value: 'Rods Table' },
-  { Roll: [46, 48], Value: 'Misc. Magic Table 1' },
-  { Roll: [49, 51], Value: 'Misc. Magic Table 2' },
-  { Roll: [52, 54], Value: 'Misc. Magic Table 3' },
-  { Roll: [55, 57], Value: 'Misc. Magic Table 4' },
-  { Roll: [58, 60], Value: 'Misc. Magic Table 5' },
-  { Roll: [61, 75], Value: 'Magic Armor Table' },
-  { Roll: [76, 86], Value: 'Magic Swords Table' },
-  { Roll: [87, 100], Value: 'Misc. Weapons Table' },
+  { Roll: [1, 20], Value: "Potions Table" },
+  { Roll: [21, 35], Value: "Scrolls Table" },
+  { Roll: [36, 40], Value: "Magic Rings Table" },
+  { Roll: [41, 45], Value: "Rods Table" },
+  { Roll: [46, 48], Value: "Misc. Magic Table 1" },
+  { Roll: [49, 51], Value: "Misc. Magic Table 2" },
+  { Roll: [52, 54], Value: "Misc. Magic Table 3" },
+  { Roll: [55, 57], Value: "Misc. Magic Table 4" },
+  { Roll: [58, 60], Value: "Misc. Magic Table 5" },
+  { Roll: [61, 75], Value: "Magic Armor Table" },
+  { Roll: [76, 86], Value: "Magic Swords Table" },
+  { Roll: [87, 100], Value: "Misc. Weapons Table" },
 ];

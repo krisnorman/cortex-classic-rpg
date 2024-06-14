@@ -1,23 +1,6 @@
 import { DieType, IDice } from "@krisnorman/rpg-utils";
 import { IFooModel } from "./FantasyTreasureGenerator.js";
 import { ITableRow, MyTable } from "./MyTable.js";
-import { IRowResult2 } from "../../../data/IRowResult2.js";
-
-class Helpers {
-  constructor(private readonly dice: IDice) { }
-
-  getRandomRows(count: number = 1, table: MyTable<ITableRow>): ITableRow[] {
-    const result: ITableRow[] = [];
-
-    for (let index = 0; index < count; index++) {
-      const roll = this.dice.roll(table.DieExpression);
-      const row = table.find(roll.total);
-      result.push(row.Row);
-    }
-
-    return result;
-  }
-}
 
 export class MonetaryTreasureRepository {
   private readonly monetaryTreasureTable = new MyTable(
@@ -60,200 +43,25 @@ export class MonetaryTreasureRepository {
   );
 
   constructor(private readonly dice: IDice) {
-    this.initGemsData();
-    this.initJewelryData();
-    //this.initMonetaryTreasureData();
+    this.gemsTable.Rows.forEach((row) => (row.TableName = "gemstable"));
+    this.jewelryTable.Rows.forEach((row) => (row.TableName = "jewelrytable"));
+    this.monetaryTreasureTable.Rows.forEach(
+      (row) => (row.TableName = "monetarytreasuretable")
+    );
   }
 
-  private initMonetaryTreasureData(): void {
-    const table = this.monetaryTreasureTable;
-    const rows = table.Rows;
-
-    // Set table name for each row
-    rows.forEach((row) => (row.TableName = "monetarytreasuretable"));
-
-    //You get (20,000+(1d4)(10,000)) copper pieces and (20,000+(1d4+1)(10,000) silver pieces!
-    rows[0].Value =
-      `You get ${this.getRoll("20000+1d4*10000").toLocaleString(
-        "en-US"
-      )} copper pieces and ` +
-      `${this.getRoll("20000+{1d4+1}*10000").toLocaleString(
-        "en-US"
-      )} silver pieces!`;
-    rows[0].Notes = "coins";
-
-    // You get (5,0000+(5d6)(1,000) electrum pieces!
-    rows[1].Value = `You get ${this.getRoll("50000+5d6*1000").toLocaleString(
-      "en-US"
-    )} electrum pieces!`;
-    rows[1].Notes = "coins";
-
-    // You get (3,000+(3d6)(1,000) gold pieces!
-    rows[2].Value = `You get ${this.getRoll("3000+3d6*1000").toLocaleString(
-      "en-US"
-    )} gold pieces!`;
-    rows[2].Notes = "coins";
-
-    // You get (500+(5d4)(100) platinum pieces!
-    rows[3].Value = `You get ${this.getRoll("500+5d4*100").toLocaleString(
-      "en-US"
-    )} platinum pieces!`;
-    rows[3].Notes = "coins";
-
-    // You get 10d10 gems!
-    const gemCount = this.getRoll("10d10");
-    rows[4].Value = `You get ${gemCount} gems!`;
-    rows[4].Items = this.getRows(gemCount, this.gemsTable);
-    rows[4].Notes = "gems";
-
-    // You get 5d10 pieces of jewelry!
-    const jewelryCount = this.getRoll("5d10");
-    rows[5].Value = `You get ${jewelryCount} pices of jewlry!`;
-    rows[5].Items = this.getRows(jewelryCount, this.jewelryTable);
-    rows[5].Notes = "jewelry";
-
-    // Roll twice, ignoring rolls above 17
-    rows[6].Items = this.multiRoll(2, table, "1d17");
-    rows[6].Notes = "twice";
-
-    // Roll thrice, discounting rolls above 17
-    rows[7].Items = this.multiRoll(3, table, "1d17");
-    rows[7].Notes = "thrice";
-
-    // Get one of each monetary treasure listed above
-    rows[8].Items = [
-      { Roll: 0, Value: rows[0].Value, Notes: "coins" },
-      { Roll: 0, Value: rows[1].Value, Notes: "coins" },
-      { Roll: 0, Value: rows[2].Value, Notes: "coins" },
-      { Roll: 0, Value: rows[3].Value, Notes: "coins" },
-      { Roll: 0, Value: rows[4].Value, Items: rows[4].Items, Notes: "gems" },
-      { Roll: 0, Value: rows[5].Value, Items: rows[5].Items, Notes: "jewelry" },
-    ];
-    rows[8].Notes = "all";
-  }
-
-  private initGemsData(): void {
-    const table = this.gemsTable;
-    const rows = table.Rows;
-
-    rows.forEach((row) => (row.TableName = "gemstable"));
-
-    // // Ornamental Stone
-    // rows[0].Value = `You found an ornamental stone worth 10 Gold.`;
-    // rows[0].Items = this.getRows(1, this.ornamentalStonesTable);
-
-    // // Semi-Precious Stone
-    // rows[1].Value = `You found a semi-precious stone worth 50 Gold.`;
-    // rows[1].Items = this.getRows(1, this.semiPreciousStonesTable);
-
-    // // Fancy Stone
-    // rows[2].Value = `You found a fancy stone worth 100 Gold.`;
-    // rows[2].Items = this.getRows(1, this.fancyStonesTable);
-
-    // // Precious Fancy Stone
-    // rows[3].Value = `You found a precious fancy stone worth 500 Gold.`;
-    // rows[3].Items = this.getRows(1, this.fancyStonesTable);
-
-    // // Gem Stone
-    // rows[4].Value = `You found a gem stone worth 1,000 Gold.`;
-    // rows[4].Items = this.getRows(1, this.gemstonesTable);
-
-    // // Jeweled Gem Stone
-    // rows[5].Value = `You found a jeweled gem stone worth 5,000 Gold.`;
-    // rows[5].Items = this.getRows(1, this.gemstonesTable);
-  }
-
-  private initJewelryData(): void {
-    const table = this.jewelryTable;
-    const rows = table.Rows;
-
-    rows.forEach((row) => (row.TableName = "jewelrytable"));
-
-    // // You found (ivory or wrought silver) jewelry! It is worth (d10*100) Gold!
-    // rows[0].Value = `You found ${[
-    //   "ivory",
-    //   "wroght silver",
-    // ].getRandom()} jewelry! It is worth ${this.getRoll(
-    //   "1d10*100"
-    // ).toLocaleString("en-US")} Gold!`;
-
-    // // You found a piece of jewelry made with silver and gold! It is worth (2d6*100) Gold!
-    // rows[1].Value = `You found a piece of jewelry made with silver and gold! It is worth ${this.getRoll(
-    //   "2d6*100"
-    // ).toLocaleString("en-US")} Gold!`;
-
-    // // You found a piece of wrought gold jewelry! It is worth (3d6*100) Gold!
-    // rows[2].Value = `You found a piece of wrought gold jewelry! It is worth ${this.getRoll(
-    //   "3d6*100"
-    // ).toLocaleString("en-US")} Gold!`;
-
-    // // You found a piece of jewelry made with (jade, coral or wrought platinum)! It is worth (5d6*100) Gold!
-    // rows[3].Value = `You found a piece of jewelry made with ${[
-    //   "jade",
-    //   "coral",
-    //   "wrought platinum",
-    // ].getRandom()}! It is worth ${this.getRoll("5d6*100").toLocaleString(
-    //   "en-US"
-    // )} Gold!`;
-
-    // // You found a silver piece of jewelry made with faceted gems! It is worth (1d6*1,000) Gold!
-    // rows[4].Value = `You found a silver piece of jewelry made with faceted gems! It is worth ${this.getRoll(
-    //   "1d6*1000"
-    // ).toLocaleString("en-US")} Gold!`;
-
-    // // You found a gold piece of jewerly made with faceted gems! It is worth (2d4*1,000) Gold!
-    // rows[5].Value = `You found a gold piece of jewerly made with faceted gems! It is worth ${this.getRoll(
-    //   "2d4*1000"
-    // ).toLocaleString("en-US")} Gold!`;
-
-    // // You found a platinum piece of jewelry made with faceted gems! It is worth (2d6*1,000) Gold!
-    // rows[6].Value = `You found a platinum piece of jewelry made with faceted gems! It is worth ${this.getRoll(
-    //   "2d6*1000"
-    // ).toLocaleString("en-US")} Gold!`;
-  }
-
-  private getRoll(expression: string): number {
-    return this.dice.roll(expression).total;
-  }
-
-  private getRows(count: number = 1, table: MyTable<ITableRow>): ITableRow[] {
-    const result: ITableRow[] = [];
-
-    for (let index = 0; index < count; index++) {
-      const roll = this.dice.roll(table.DieExpression);
-      const row = table.find(roll.total);
-      result.push(row.Row);
-    }
-
-    return result;
-  }
-
-  private multiRoll(
-    count: number,
-    table: MyTable<ITableRow>,
-    expression: string
-  ): ITableRow[] {
-    if (count < 1) return [];
-    const result: ITableRow[] = [];
-
-    for (let index = 0; index < count; index++) {
-      const roll = this.dice.roll(expression);
-      const item = table.find(roll.total);
-      result.push(item.Row);
-    }
-
-    return result;
-  }
-
-  getRandom(count: number = 1): IFooModel[] {
+  getRandom(count: number = 1, preRoll?: number): IFooModel[] {
     if (count < 1) count = 1;
     let model: IFooModel[] = [];
 
     for (let index = 0; index < count; index++) {
-      const roll = this.dice.roll(this.monetaryTreasureTable.DieExpression);
-      const row = this.monetaryTreasureTable.find(11);
-      //const row = this.getMonetaryTreasureBase(1);
-      
+      const roll =
+        preRoll != undefined
+          ? preRoll
+          : this.dice.roll(this.monetaryTreasureTable.DieExpression).total;
+
+      const row = this.monetaryTreasureTable.find(roll);
+
       // You get (20,000+(1d4)(10,000)) copper pieces and (20,000+(1d4+1)(10,000) silver pieces!
       // Roll: 1-2
       if (row.Index === 0) {
@@ -282,52 +90,52 @@ export class MonetaryTreasureRepository {
         model.push(new CoinModel(platinums.Title));
       }
 
-      // Gems, 13-15
-      if (row.Index === 4) { 
+      // Gems, Roll: 13-15
+      if (row.Index === 4) {
         const gems = this.getGems();
         model.push(gems);
       }
 
-      // You get 5d10 pieces of jewelry!, 16-17
+      // You get 5d10 pieces of jewelry!, Roll: 16-17
       if (row.Index === 5) {
         const jewelry = this.getJewelry();
         model.push(jewelry);
       }
 
-      let items = <ITableRow[]>row.Row.Items;
-
-      // Roll twice, 18
+      // Roll twice, Roll: 18
       if (row.Index === 6) {
-        this.processItems(items, model);
+        model.push(...this.getTwice());
       }
 
-      // Roll thrice, 19
+      // Roll thrice, Roll: 19
       if (row.Index === 7) {
-        this.processItems(items, model);
+        model.push(...this.getThrice());
       }
 
-      // One of each, 20
+      // One of each, Roll: 20
       if (row.Index === 8) {
-        this.processItems(items, model);
+        model.push(this.getCopperPieces());
+        model.push(this.getElectrumPieces());
+        model.push(this.getGoldPieces());
+        model.push(this.getPlatinumPieces());
+        model.push(this.getGems());
+        model.push(this.getJewelry());
       }
     }
 
     return model;
   }
 
-  private cloneRow(row: IRowResult2<ITableRow>) {
-    const clone: IRowResult2<ITableRow> = {
-      ActualRoll: row.ActualRoll,
-      Index: row.Index,
-      Row: row.Row,
-    };
-
-    return clone;
+  private getRoll(expression: string): number {
+    return this.dice.roll(expression).total;
   }
 
   private getCopperPieces(): IFooModel {
-    const copperPieces = this.getRoll("20000+1d4*10000").toLocaleString("en-US");
-    const silverPieces = this.getRoll("20000+{1d4+1}*10000").toLocaleString("en-US");
+    const copperPieces =
+      this.getRoll("20000+1d4*10000").toLocaleString("en-US");
+    const silverPieces = this.getRoll("20000+{1d4+1}*10000").toLocaleString(
+      "en-US"
+    );
 
     const title =
       `You get ${copperPieces} copper pieces and ` +
@@ -336,25 +144,26 @@ export class MonetaryTreasureRepository {
     const result: IFooModel = {
       Title: title,
       Items: [],
-      HasItems: false
+      HasItems: false,
     };
 
     return result;
   }
 
   private getElectrumPieces(): IFooModel {
-    const electrumPieces = this.getRoll("50000+5d6*1000").toLocaleString("en-US");
+    const electrumPieces =
+      this.getRoll("50000+5d6*1000").toLocaleString("en-US");
     const title = `You get ${electrumPieces} electrum pieces!`;
 
     const result: IFooModel = {
       Title: title,
       Items: [],
-      HasItems: false
+      HasItems: false,
     };
 
     return result;
   }
-  
+
   private getGoldPieces(): IFooModel {
     const goldPieces = this.getRoll("3000+3d6*1000").toLocaleString("en-US");
     const title = `You get ${goldPieces} gold pieces!`;
@@ -362,7 +171,7 @@ export class MonetaryTreasureRepository {
     const result: IFooModel = {
       Title: title,
       Items: [],
-      HasItems: false
+      HasItems: false,
     };
 
     return result;
@@ -375,125 +184,11 @@ export class MonetaryTreasureRepository {
     const result: IFooModel = {
       Title: title,
       Items: [],
-      HasItems: false
+      HasItems: false,
     };
 
     return result;
   }
-
-  private getMonetaryTreasureBase(roll: number): IRowResult2<ITableRow> {
-    let row = this.monetaryTreasureTable.find(roll);
-
-    //You get (20,000+(1d4)(10,000)) copper pieces and (20,000+(1d4+1)(10,000) silver pieces!
-    if (row.Index === 0) {
-      row.Row.Value =
-        `You get ${this.getRoll("20000+1d4*10000").toLocaleString(
-          "en-US"
-        )} copper pieces and ` +
-        `${this.getRoll("20000+{1d4+1}*10000").toLocaleString(
-          "en-US"
-        )} silver pieces!`;
-      row.Row.Notes = "coins";
-      return this.cloneRow(row);
-    }
-
-    // You get (5,0000+(5d6)(1,000) electrum pieces!
-    if (row.Index === 1) {
-      row.Row.Value = `You get ${this.getRoll("50000+5d6*1000").toLocaleString(
-        "en-US"
-      )} electrum pieces!`;
-      row.Row.Notes = "coins";
-      return this.cloneRow(row);
-    }
-
-    // You get (3,000+(3d6)(1,000) gold pieces!
-    if (row.Index === 2) {
-      row.Row.Value = `You get ${this.getRoll("3000+3d6*1000").toLocaleString(
-        "en-US"
-      )} gold pieces!`;
-      row.Row.Notes = "coins";
-      return this.cloneRow(row);
-    }
-
-    // You get (500+(5d4)(100) platinum pieces!
-    if (row.Index === 3) {
-      row.Row.Value = `You get ${this.getRoll("500+5d4*100").toLocaleString(
-        "en-US"
-      )} platinum pieces!`;
-      row.Row.Notes = "coins";
-      return this.cloneRow(row);
-    }
-
-    // You get 10d10 gems!
-    if (row.Index === 4) {
-      const gemCount = this.getRoll("10d10");
-      row.Row.Value = `You get ${gemCount} gems!`;
-      row.Row.Items = this.getRows(gemCount, this.gemsTable);
-      row.Row.Notes = "gems";
-      return this.cloneRow(row);
-    }
-
-    // You get 5d10 pieces of jewelry!
-    if (row.Index === 5) {
-      // const jewelryCount = this.getRoll("5d10");
-      // row.Row.Value = `You get ${jewelryCount} pices of jewlry!`;
-      // row.Row.Items = this.getRows(jewelryCount, this.jewelryTable);
-      // row.Row.Notes = "jewelry";
-      // return this.cloneRow(row);
-    }
-
-    // Roll twice, ignoring rolls above 17
-    if (row.Index === 6) {
-      row.Row.Items = this.multiRoll(2, this.monetaryTreasureTable, "1d17");
-      row.Row.Notes = "twice";
-      return this.cloneRow(row);
-    }
-
-    // Roll thrice, discounting rolls above 17
-    if (row.Index === 7) {
-      row.Row.Items = this.multiRoll(3, this.monetaryTreasureTable, "1d17");
-      row.Row.Notes = "thrice";
-      return this.cloneRow(row);
-    }
-
-    // Get one of each monetary treasure listed above
-    if (row.Index === 8) {
-      // Coins, 1-2, 3-5, 6-10, 11-12
-      const coins1 = this.getMonetaryTreasureBase(1);
-      const coins2 = this.getMonetaryTreasureBase(3);
-      const coins3 = this.getMonetaryTreasureBase(6);
-      const coins4 = this.getMonetaryTreasureBase(11);
-      // Gems, 13-15
-      const gems = this.getMonetaryTreasureBase(13);
-      // You get 5d10 pieces of jewelry!, 16-17
-      const jewelry = this.getMonetaryTreasureBase(16);
-
-      row.Row.Items = [
-        { Roll: 0, Value: coins1.Row.Value, Notes: "coins" },
-        { Roll: 0, Value: coins2.Row.Value, Notes: "coins" },
-        { Roll: 0, Value: coins3.Row.Value, Notes: "coins" },
-        { Roll: 0, Value: coins4.Row.Value, Notes: "coins" },
-        {
-          Roll: 0,
-          Value: gems.Row.Value,
-          Items: gems.Row.Items,
-          Notes: "gems",
-        },
-        {
-          Roll: 0,
-          Value: jewelry.Row.Value,
-          Items: jewelry.Row.Items,
-          Notes: "jewelry",
-        },
-      ];
-      row.Row.Notes = "all";
-      return this.cloneRow(row);
-    }
-
-    return row;
-  }
-
-  //private getCoins(): IFooModel {}
 
   private getGems(): IFooModel {
     // You get 10d10 gems!
@@ -537,24 +232,29 @@ export class MonetaryTreasureRepository {
     return jewelryModel;
   }
 
-  private processItems(items: ITableRow[], model: IFooModel[]): void {
-    for (let index = 0; index < items.length; index++) {
-      const item = items[index];
-      if (item.Notes === "coins") model.push(new CoinModel(item.Value));
-      if (item.Notes === "gems") {
-        const gems = this.getGems();
-        model.push(gems);
-      }
-      if (item.Notes === "jewelry") {
-        const jewelry = this.getJewelry();
-        model.push(jewelry);
-      }
-    }
+  private getTwice(): IFooModel[] {
+    const result: IFooModel[] = [];
+    const roll1 = this.dice.roll("1d17");
+    result.push(...this.getRandom(1, roll1.total));
+    const roll2 = this.dice.roll("1d17");
+    result.push(...this.getRandom(1, roll1.total));
+    return result;
+  }
+
+  private getThrice(): IFooModel[] {
+    const result: IFooModel[] = [];
+    const roll1 = this.dice.roll("1d17");
+    result.push(...this.getRandom(1, roll1.total));
+    const roll2 = this.dice.roll("1d17");
+    result.push(...this.getRandom(1, roll2.total));
+    const roll3 = this.dice.roll("1d17");
+    result.push(...this.getRandom(1, roll3.total));
+    return result;
   }
 }
 
 class CoinModel implements IFooModel {
-  constructor(private value: string) {
+  constructor(value: string) {
     this.Title = value;
     this.Items = [];
     this.HasItems = false;
@@ -737,12 +437,6 @@ export const MonetaryTreasureData: ITableRow[] = [
   { Roll: 19, Value: "Roll thrice, discounting rolls above 17" },
   { Roll: 20, Value: "Get one of each monetary treasure  listed above" },
 ];
-
-export const MonetaryTreasureTable = new MyTable(
-  MonetaryTreasureData,
-  "Monetary Treasure",
-  DieType.d20
-);
 
 export const GemsData: ITableRow[] = [
   {

@@ -42,9 +42,3 @@ export const RegularTreasureData: ITableRow[] = [
   { Roll: [1, 50], Value: "Armor" },
   { Roll: [51, 100], Value: "Weapons" },
 ];
-
-// export const RegularTreasureTable = new MyTable(
-//   RegularTreasureData,
-//   "Regular Treasure",
-//   DieType.percentile
-// );
