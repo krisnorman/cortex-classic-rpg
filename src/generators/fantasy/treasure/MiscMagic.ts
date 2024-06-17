@@ -1,10 +1,10 @@
 import { ITableRow, MyTable } from "./MyTable.js";
 import { IFooModel } from "./FantasyTreasureGenerator.js";
 import { SpellRepository } from "./Spells.js";
-import { DieType, IDice } from "@krisnorman/rpg-utils";
-import { IRowResult2 } from "../../../data/index.js";
+import { DieType, IDice, IGenericRowResult } from "@krisnorman/rpg-utils";
 import { IounStoneRepository } from "./IounStones.js";
 import { InsturmentOfTheBardsRepository } from "./InsturmentOfTheBards.js";
+import "../../../extensions/Extensions.js";
 
 export class MiscMagicRepository {
   private readonly miscMagic1Table = new MyTable(
@@ -134,7 +134,7 @@ class MiscMagic1Processor {
     return items;
   }
 
-  private getProcessed(row: IRowResult2<ITableRow>): IFooModel[] {
+  private getProcessed(row: IGenericRowResult<ITableRow>): IFooModel[] {
     let results: IFooModel[] = [];
 
     switch (true) {
@@ -185,7 +185,7 @@ class MiscMagic1Processor {
     return result;
   }
 
-  private getSpells(row: IRowResult2<ITableRow>): IFooModel[] {
+  private getSpells(row: IGenericRowResult<ITableRow>): IFooModel[] {
     const spellCount = this.dice.roll("1d7+22").total;
     const title = row.Row.Value.replace("22+1d7", spellCount.toString());
     const result: IFooModel[] = [{ Title: title, Items: [], HasItems: false }];

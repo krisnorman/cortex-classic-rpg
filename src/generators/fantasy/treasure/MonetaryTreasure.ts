@@ -1,7 +1,8 @@
-import { DieType, IDice } from "@krisnorman/rpg-utils";
+import { DieType, IDice, } from "@krisnorman/rpg-utils";
 import { IFooModel } from "./FantasyTreasureGenerator.js";
 import { ITableRow, MyTable } from "./MyTable.js";
-
+import '../../../extensions/Extensions.js';
+ 
 export class MonetaryTreasureRepository {
   private readonly monetaryTreasureTable = new MyTable(
     MonetaryTreasureData,
@@ -378,7 +379,7 @@ class JewelryModel implements IFooModel {
         .roll("3d6*100")
         .total.toLocaleString("en-US")} Gold!`;
     }
-
+ 
     // You found a piece of jewelry made with (jade, coral or wrought platinum)! It is worth (5d6*100) Gold!
     if (index === 3) {
       result = `You found a piece of jewelry made with ${[

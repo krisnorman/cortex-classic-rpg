@@ -1,5 +1,4 @@
-import { IRow } from "@krisnorman/rpg-utils";
-import { GenericTable } from "../../../index.js";
+import { IRow, GenericTable } from "@krisnorman/rpg-utils";
 
 export class MyTable<T extends ITableRow> extends GenericTable<T> {
     constructor(

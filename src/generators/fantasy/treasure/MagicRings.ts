@@ -1,7 +1,6 @@
 import { ITableRow, MyTable } from "./MyTable.js";
 import { IFooModel } from "./FantasyTreasureGenerator.js";
-import { DieType, IDice } from "@krisnorman/rpg-utils";
-import { IRowResult2 } from "../../../data/index.js";
+import { DieType, IDice, IGenericRowResult } from "@krisnorman/rpg-utils";
 
 export class MagicRing implements IFooModel {
   constructor(title: string) {
@@ -62,7 +61,7 @@ export class MagicRingsRepository {
     return rings;
   }
 
-  private getRandomRow(): IRowResult2<ITableRow> {
+  private getRandomRow(): IGenericRowResult<ITableRow> {
     const roll = this.dice.roll(this.ringsTable.DieExpression);
     const row = this.ringsTable.find(roll.total);
     return row;

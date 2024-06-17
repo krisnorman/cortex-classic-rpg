@@ -1,7 +1,6 @@
-import { DieType, IDice } from "@krisnorman/rpg-utils";
+import { DieType, IDice, IGenericRowResult } from "@krisnorman/rpg-utils";
 import { IFooModel } from "./FantasyTreasureGenerator.js";
 import { ITableRow, MyTable } from "./MyTable.js";
-import { IRowResult2 } from "../../../data/IRowResult2.js";
 
 export class Rod implements IFooModel {
   constructor(row: ITableRow) {
@@ -106,7 +105,7 @@ export class RodsStavesWandsRepository {
     return wands;
   }
 
-  private processDiceRolls(row: IRowResult2<ITableRow>): void {
+  private processDiceRolls(row: IGenericRowResult<ITableRow>): void {
     row.Row.Value = row.Row.Value.replace(
       "(1d25)",
       this.dice.roll("1d25").total.toString()

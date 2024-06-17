@@ -1,12 +1,11 @@
 import { ITableRow, MyTable } from './MyTable.js';
 import { SpellRepository } from './Spells.js';
 import { IFooModel } from './FantasyTreasureGenerator.js';
-import { IRowResult2 } from '../../../data/index.js';
-import { DieType, IDice } from '@krisnorman/rpg-utils';
+import { DieType, IDice, IGenericRowResult } from '@krisnorman/rpg-utils';
 
 export class Scroll implements IFooModel {
   constructor(
-    private row: IRowResult2<ITableRow>,
+    private row: IGenericRowResult<ITableRow>,
     private spellsRepository: SpellRepository
   ) {    
     this.fillItems();
