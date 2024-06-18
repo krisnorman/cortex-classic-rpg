@@ -84,12 +84,14 @@ export class MagicTreasureRepository {
         });
 
         const otherItems = [
-          () => this.getMagicArmor(),
-          () => this.getMagicItems(),
-          //() => this.getMagicSword(),
-          //() => this.getPotions(),
-          () => this.getMiscMagic(),
+          // () => this.getPotions(),
           () => this.getScrolls(),
+          () => this.getMagicItems(),
+          () => this.getMiscMagic(),
+          () => this.getRings(),
+          () => this.getRodsStavesWands(),
+          () => this.getMagicArmor(),
+          // () => this.getMagicSword(),
           () => this.getMagicWeapon(),
           () => this.getIounStone(),
         ];
@@ -125,12 +127,17 @@ export class MagicTreasureRepository {
         model.push(...this.getRings());
         model.push(...this.getRods());
         const otherItems = [
-          () => this.getMagicArmor(),
-          () => this.getMagicItems(),
-          () => this.getMagicSword(),
           () => this.getPotions(),
-          () => this.getMiscMagic(),
           () => this.getScrolls(),
+          () => this.getMagicItems(),
+          () => this.getMiscMagic(),
+          () => this.getRings(),
+          // () => this.getRods(),
+          // () => this.getWands(),
+          // () => this.getStaves(),
+          () => this.getRodsStavesWands(),
+          () => this.getMagicArmor(),
+          () => this.getMagicSword(),
           () => this.getMagicWeapon(),
           () => this.getIounStone(),
         ];
@@ -151,16 +158,23 @@ export class MagicTreasureRepository {
 
         model.push(...this.getRods());
         model.push(...this.getMiscMagic());
+
         const otherItems = [
-          () => this.getMagicArmor(),
-          () => this.getMagicItems(),
-          () => this.getMagicSword(),
           () => this.getPotions(),
-          () => this.getRings(),
           () => this.getScrolls(),
+          () => this.getMagicItems(),
+          () => this.getMiscMagic(),
+          () => this.getRings(),
+          // () => this.getRods(),
+          // () => this.getWands(),
+          // () => this.getStaves(),
+          () => this.getRodsStavesWands(),
+          () => this.getMagicArmor(),
+          () => this.getMagicSword(),
           () => this.getMagicWeapon(),
           () => this.getIounStone(),
         ];
+
         const otherItem1 = otherItems.getRandom();
         const otherItem2 = otherItems.getRandom();
         const otherItem3 = otherItems.getRandom();
@@ -210,6 +224,12 @@ export class MagicTreasureRepository {
     return rods;
   }
 
+  private getRodsStavesWands(count: number = 1): IFooModel[] {
+    if (count < 1) count = 1;
+    const items = this.rodsStavesWandsRepository.getRandom(count);
+    return items;
+  }
+
   private getMagicArmor(count: number = 1): MagicArmor[] {
     if (count < 1) count = 1;
     const magicArmor = this.magicArmorRepository.getRandom(count);
@@ -250,9 +270,3 @@ export const MagicTreasureData: ITableRow[] = [
   { Roll: 19, Value: "Any 4 items, 1 is a Ring, 1 is a Rod" },
   { Roll: 20, Value: "Any 5 items, 1 is a Rod, 1 is Miscellaneous Magic" },
 ];
-
-export const MagicTreasureTable = new MyTable(
-  MagicTreasureData,
-  "Magic Treasure",
-  DieType.d20
-);

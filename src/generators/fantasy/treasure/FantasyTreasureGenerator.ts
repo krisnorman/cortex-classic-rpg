@@ -45,7 +45,7 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
     "Fantasy Treasure",
     DieType.percentile
   );
-  
+
   private armorRepository: ArmorRepository;
   private weaponsRepository: WeaponsRepository;
   private regularTreasureRepository: RegularTreasureRepository;
@@ -66,25 +66,24 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
   private iounStoneRepository: IounStoneRepository;
   private insturmentOfTheBardsRepository: InsturmentOfTheBardsRepository;
 
-  constructor(private readonly dice: IDice) {    
+  constructor(private readonly dice: IDice) {
     this.armorRepository = new ArmorRepository(dice);
     this.magicArmorRepository = new MagicArmorRepository(dice);
     this.magicSwordRepository = new MagicSwordRepository(dice);
     this.magicWeaponsRepository = new MagicWeaponsRepository(dice);
     this.iounStoneRepository = new IounStoneRepository(dice);
-    this.insturmentOfTheBardsRepository = new InsturmentOfTheBardsRepository(dice);
+    this.insturmentOfTheBardsRepository = new InsturmentOfTheBardsRepository(
+      dice
+    );
 
-    this.weaponsRepository = new WeaponsRepository(dice);    
+    this.weaponsRepository = new WeaponsRepository(dice);
     this.regularTreasureRepository = new RegularTreasureRepository(
       dice,
       this.armorRepository,
       this.weaponsRepository
     );
     this.spellsRepository = new SpellRepository(dice);
-    this.scrollsRepository = new ScrollsRepository(
-      dice,
-      this.spellsRepository
-    );
+    this.scrollsRepository = new ScrollsRepository(dice, this.spellsRepository);
     this.potionsRepository = new PotionsRepository(dice);
     this.magicRingsRepository = new MagicRingsRepository(dice);
     this.rodsStavesWandsRepository = new RodsStavesWandsRepository(dice);
@@ -127,7 +126,7 @@ export class FantasyTreasureGenerator implements IFantasyTreasureGenerator {
     this.mapsRepository = new MapsRepository(this.dice);
   }
 
-  generate(): IFantasyTreasure {    
+  generate(): IFantasyTreasure {
     const fantasyTreasure: IFantasyTreasure = { Monetary: [] };
 
     const roll = this.dice.roll(this.treasureTable.DieExpression);

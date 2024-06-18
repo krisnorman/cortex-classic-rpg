@@ -165,7 +165,8 @@ export const MagicArmorData: ITableRow[] = [
   {
     Roll: 97,
     Value:
-      "You find a large magical shield! It gives you a +5 to your Get out of Harm's Way for Melee attacks and a +8 to your Get out of Harm's Way for ranged attacks.",
+      "You find a large magical shield! It gives you a +5 to your Get out of Harm's Way for " +
+      "Melee attacks and a +8 to your Get out of Harm's Way for ranged attacks.",
     AltValue: "Large Shield +1, +4 versus Missiles",
   },
   {
